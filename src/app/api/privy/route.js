@@ -1,23 +1,33 @@
-// import {PrivyClient} from '@privy-io/server-auth';
+import { PrivyClient } from '@privy-io/server-auth';
+import { NextResponse } from 'next/server';
 
-// const privy = new PrivyClient('insert_your_privy_app_id', 'insert_your_privy_app_secret');
-// const {id, address, chainType} = await privy.walletApi.create({chainType: 'ethereum'});
+export async function GET() {
+    try {
+        // Initialize Privy client
+        const privy = new PrivyClient(
+            process.env.PRIVY_APP_ID,
+            process.env.PRIVY_APP_SECRET
+        );
 
-// const {data} = await privy.walletApi.ethereum.signMessage({
-//     walletId: id,
-//     message: 'Hello server wallets!',
-//   });
-  
-//   const {signature, encoding} = data;
+        // Create a new wallet
+        const { id, address, chainType } = await privy.walletApi.create({
+            chainType: 'ethereum'
+        });
 
-//   const {data} = await privy.walletApi.ethereum.sendTransaction({
-//     walletId: id,
-//     caip2: 'eip155:84532',
-//     transaction: {
-//       to: '0xyourRecipientAddress',
-//       value: 100000,
-//       chainId: 84532,
-//     },
-//   });
-  
-//   const {hash} = data;
+        // Return the wallet information
+        return NextResponse.json({
+            success: true,
+            wallet: {
+                id,
+                address,
+                chainType
+            }
+        });
+
+    } catch (error) {
+        return NextResponse.json({
+            success: false,
+            error: error.message
+        }, { status: 500 });
+    }
+}
