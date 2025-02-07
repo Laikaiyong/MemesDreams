@@ -28,8 +28,13 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/ui/message-circle-more.jsx"  ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "paths": {
+      "@/*": [
+        "./*"
+      ]
+  },
 }
