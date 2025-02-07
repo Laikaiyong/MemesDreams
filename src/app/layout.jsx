@@ -1,5 +1,6 @@
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
+import Navbar from "../components/custom/Navbar";
 
 const ubuntu = Ubuntu({
   weight: ["300", "400", "500", "700"],
