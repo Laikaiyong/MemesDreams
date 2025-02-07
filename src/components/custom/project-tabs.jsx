@@ -3,6 +3,7 @@
 import Image from "next/image";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import projectsData from "../../data/projectsData";
 
 export default function ProjectTabs() {
     const router =  useRouter();
@@ -10,7 +11,7 @@ export default function ProjectTabs() {
     return (
         <>
             <div className="space-y-6">
-                {data.map((project) => (
+                {projectsData.map((project) => (
                     <div key={project.id} className="w-full border px-4 hover:cursor-pointer py-2 hover:bg-slate-100 rounded-[16px]" onClick={() => router.push(`/projects/${project.id}`)}>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -53,36 +54,3 @@ export default function ProjectTabs() {
         </>
     )
 }
-
-const data = [
-    {
-        id: 1,
-        projectTitle: "Pussy Coin",
-        projectToken: "$PUSSY",
-        contractAddress: "0x1234567890",
-        projectImage: "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg",
-        projectImageAlt: "What's up bro",
-        twitterLink: "https://x.com/LaiVandyck",
-        status: "ACTIVE",
-    },
-    {
-        id: 2,
-        projectTitle: "PEPE WAGON",
-        projectToken: "$PEPEWG",
-        contractAddress: "0x1234567890",
-        projectImage: "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg",
-        projectImageAlt: "What's up bro",
-        twitterLink: "https://x.com/LaiVandyck",
-        status: "INACTIVE",
-    },
-    {
-        id: 3,
-        projectTitle: "SIMP COIN",
-        projectToken: "$SIMP",
-        contractAddress: "0x1234567890",
-        projectImage: "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg",
-        projectImageAlt: "What's up bro",
-        twitterLink: "https://x.com/LaiVandyck",
-        status: "ACTIVE"
-    },
-]
