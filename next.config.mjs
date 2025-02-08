@@ -4,15 +4,9 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "thispersondoesnotexist.com",
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: "https",
-                hostname: "ichef.bbci.co.uk",
-                port: '',
-                pathname: '/**',
+                hostname: "**",
+                port: "",
+                pathname: "/**",
             },
         ]
     }

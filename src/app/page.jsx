@@ -6,31 +6,15 @@ import ProjectTabs from "../components/custom/project-tabs"; // Import ProjectTa
 
 export default function HomePage() {
   return (
-    <>
-      <main className="flex flex-col min-h-screen">
-        <Navbar />
-        
-        {/* Container - Full Height Minus Navbar */}
-        <div className="flex flex-1 px-10">
-          {/* Content Area */}
-          <div className="w-full border-[1px] rounded-[22px] p-4 flex flex-col flex-1">
-            <Dashboard />
-          </div>
+    <main className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex flex-1 px-10 py-6">
+        <div className="w-full border rounded-[22px] p-6">
+          <h2 className="text-2xl font-bold mb-6">Your Characters</h2>
+          <ProjectTabs />
         </div>
-
-        {/* Floating Chat Bubble */}
-        <ChatBubble />
-      </main>
-    </>
+      </div>
+      <ChatBubble />
+    </main>
   );
 }
-
-// Main Content: Your Projects
-const Dashboard = () => (
-  <div className="flex flex-col h-full">
-    <h2 className="text-xl font-bold mb-4">Your Projects</h2>
-    <div>
-      <ProjectTabs />
-    </div>
-  </div>
-);

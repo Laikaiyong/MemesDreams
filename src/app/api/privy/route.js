@@ -1,26 +1,37 @@
 import { PrivyClient } from '@privy-io/server-auth';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function POST(request) {
     try {
-        // Initialize Privy client
+        const body = await request.json().catch(() => ({}));
+        const storedWalletId = body.storedWalletId;
+
         const privy = new PrivyClient(
             process.env.PRIVY_APP_ID,
             process.env.PRIVY_APP_SECRET
         );
 
-        // Create a new wallet
-        const { id, address, chainType } = await privy.walletApi.create({
-            chainType: 'ethereum'
-        });
+        let wallet;
 
-        // Return the wallet information
+        if (storedWalletId) {
+            try {
+                wallet = await privy.walletApi.getWallet({ id: storedWalletId });
+            } catch (error) {
+                wallet = await privy.walletApi.create({
+                    chainType: 'ethereum'
+                });
+            }
+        } else {
+            wallet = await privy.walletApi.create({
+                chainType: 'ethereum'
+            });
+        }
         return NextResponse.json({
             success: true,
             wallet: {
-                id,
-                address,
-                chainType
+                id: wallet.id,
+                address: wallet.address,
+                chainType: wallet.chainType
             }
         });
 

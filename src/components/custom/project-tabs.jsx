@@ -1,56 +1,64 @@
 "use client";
 
-import Image from "next/image";
-import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import projectsData from "../../data/projectsData";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function ProjectTabs() {
-    const router =  useRouter();
+  const [characters, setCharacters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    return (
-        <>
-            <div className="space-y-6">
-                {projectsData.map((project) => (
-                    <div key={project.id} className="w-full border px-4 hover:cursor-pointer py-2 hover:bg-slate-100 rounded-[16px]" onClick={() => router.push(`/projects/${project.id}`)}>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                            {/* Project Image */}
-                            <div className="w-20 h-20 object-contain relative">
-                                <Image 
-                                    src={project.projectImage}
-                                    alt={project.projectImageAlt}
-                                    fill
-                                    objectFit="contain"
-                                    className="rounded-full"
-                                />
-                            </div>
-                            {/* Details */}
-                            <div className="flex flex-col">
-                                <div className="flex gap-2 items-center justify-center">
-                                    <h3 className="font-bold">{project.projectTitle}</h3>
-                                    <p className="text-[12px]">{project.projectToken}</p>
-                                </div>
-                                <a href={`https://etherscan.io/address/${project.contractAddress}`} target="_blank" className="text-gray-400 hover:text-gray-600 text-[14px]">{project.contractAddress}</a>
-                            </div>
-                            </div>
-                            
-                            {/* Status */}
-                            <span 
-                            className={clsx(
-                                "px-3 py-1 rounded-full text-sm font-bold",
-                                project.status === "ACTIVE" 
-                                    ? "text-green-700 bg-green-100" 
-                                    : "text-red-700 bg-red-100"
-                                )}
-                            >
-                                {project.status}
-                            </span>
-                        </div>
-                        
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      const walletId = localStorage.getItem('walletId');
+      if (!walletId) return;
+
+      try {
+        const response = await fetch(`/api/aws/s3?walletId=${walletId}`);
+        const data = await response.json();
+        if (data.success) {
+          setCharacters(data.characters);
+        }
+      } catch (error) {
+        console.error('Error fetching characters:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCharacters();
+  }, []);
+
+  if (isLoading) {
+    return <div className="animate-pulse">Loading characters...</div>;
+  }
+
+return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {characters.map((character) => (
+            <div 
+                key={character.id}
+                className="border rounded-xl p-4 hover:shadow-lg transition cursor-pointer"
+                onClick={() => window.location.href = `/projects/${character.id}`}
+            >
+                {character.mainImage && (
+                    <div className="relative w-full h-48 mb-4">
+                        <Image
+                            src={character.mainImage.url}
+                            alt={character.id}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-contain rounded-lg"
+                        />
                     </div>
-                ))}
+                )}
+                <h3 className="text-lg font-semibold">
+                    {character.id}
+                </h3>
+                <p className="text-sm text-gray-500">
+                    {character.twitterPosts.length} Twitter posts
+                </p>
             </div>
-        </>
-    )
+        ))}
+    </div>
+);
 }

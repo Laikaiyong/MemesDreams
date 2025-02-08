@@ -1,5 +1,6 @@
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from '../context/auth-provider';
 import Navbar from "../components/custom/Navbar";
 
 const ubuntu = Ubuntu({
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${ubuntu.className} antialiased`}
       >
+        <AuthProvider>
         {children}
+        </AuthProvider>
       </body>
     </html>
   );
