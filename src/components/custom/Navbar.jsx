@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ConnectWallet from "./connect-wallet";
 
 export default function Navbar() {
     return (
@@ -9,9 +10,9 @@ export default function Navbar() {
                 <Link href="/" className="text-2xl font-bold">
                     MemesDream
                 </Link>
-                <button className="text-background bg-foreground px-4 py-2 rounded-lg hover:bg-[#3b3b3b]">
-                    Connect Wallet
-                </button>
+                <div>
+                    <ConnectWallet />
+                </div>
             </nav>
         </>
     )
