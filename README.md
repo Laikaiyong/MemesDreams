@@ -1,6 +1,6 @@
 # MemesDreams - AI NFT/Token Character Generation & Social Media Platform
 
-Create, manage, and share AI-generated characters with integrated social media features. MemesDreams leverages AWS Bedrock AI to generate unique characters and enables sharing through Twitter integration.
+Create, manage, and share AI-generated characters with integrated social media features. MemesDreams leverages AWS Bedrock AI to generate unique characters and enables sharing through Twitter integration. The platform utilizes Hyperbolic AI's intent recognition and natural language processing capabilities as shown in the architecture diagram, powering intelligent character interactions and automated content generation.
 
 ![MemesDreams Architecture](./docs/architecture.png)
 
