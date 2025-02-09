@@ -42,7 +42,7 @@ export async function POST(request) {
         // Initialize Thirdweb SDK for Scroll Sepolia
         const sdk = ThirdwebSDK.fromPrivateKey(
             process.env.PRIVATE_KEY,
-            "scroll-sepolia"
+            "sepolia"
         );
 
         switch (action) {
