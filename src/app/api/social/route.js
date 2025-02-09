@@ -6,10 +6,10 @@ export async function POST(request) {
     const { character, type } = await request.json();
     
     const bedrock = new BedrockRuntimeClient({
-      region: process.env.AWS_REGION,
+      region: process.env.CUSTOM_AWS_REGION,
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.CUSTOM_AWS_ACCESS_KEY,
+        secretAccessKey: process.env.CUSTOM_AWS_SECRET_ACCESS_KEY,
       }
     });
 

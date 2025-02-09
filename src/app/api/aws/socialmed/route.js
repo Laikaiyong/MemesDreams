@@ -12,18 +12,18 @@ import { NextResponse } from "next/server";
 
 // AWS Clients
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.CUSTOM_AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.CUSTOM_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.CUSTOM_AWS_SECRET_ACCESS_KEY,
   },
 });
 
 const bedrockClient = new BedrockRuntimeClient({
-  region: process.env.AWS_REGION,
+  region: process.env.CUSTOM_AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.CUSTOM_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.CUSTOM_AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -131,7 +131,7 @@ export async function POST(request) {
       );
 
       // Return S3 URL
-      const imageUrl = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      const imageUrl = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${fileName}`;
 
       return NextResponse.json({
         success: true,

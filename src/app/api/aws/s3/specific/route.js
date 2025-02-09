@@ -2,10 +2,10 @@ import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.CUSTOM_AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.CUSTOM_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.CUSTOM_AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -37,13 +37,13 @@ export async function GET(request) {
 
     response.Contents?.forEach(item => {
       const path = item.Key;
-      const url = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`;
+      const url = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${path}`;
 
       const pathParts = path.split('/');
       if (pathParts.length === 5) {  // users/walletId/characters/characterId
         character.mainImage = {
           path,
-          url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+          url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${path}`
         };
       } else if (path.includes('/twitter/')) {
         character.twitterPosts.push({

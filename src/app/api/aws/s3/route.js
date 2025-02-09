@@ -2,10 +2,10 @@ import { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand, Del
 import { NextResponse } from "next/server";
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.CUSTOM_AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.CUSTOM_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.CUSTOM_AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -47,12 +47,12 @@ export async function GET(request) {
         if (pathParts.length === 5) {  // users/walletId/characters/characterId
           characters[characterId].mainImage = {
             path,
-            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${path}`
           };
         } else if (path.includes('/twitter/')) {
           characters[characterId].twitterPosts.push({
             path,
-            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${path}`
           });
         }
       });
@@ -104,7 +104,7 @@ export async function POST(request) {
     return NextResponse.json({
       success: true,
       path: s3Path,
-      url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Path}`
+      url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.CUSTOM_AWS_REGION}.amazonaws.com/${s3Path}`
     });
 
   } catch (error) {
