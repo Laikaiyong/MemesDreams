@@ -22,7 +22,7 @@ export async function GET(request) {
       }
   
       const command = new ListObjectsV2Command({
-        Bucket: process.env.S3_BUCKET,
+        Bucket: process.env.CUSTOM_S3_BUCKET,
         Prefix: `users/${walletId}/characters/`,
       });
   
@@ -47,12 +47,12 @@ export async function GET(request) {
         if (pathParts.length === 5) {  // users/walletId/characters/characterId
           characters[characterId].mainImage = {
             path,
-            url: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
           };
         } else if (path.includes('/twitter/')) {
           characters[characterId].twitterPosts.push({
             path,
-            url: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+            url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
           });
         }
       });
@@ -93,7 +93,7 @@ export async function POST(request) {
     const s3Path = `users/${walletId}/characters/${character}/${type}/${filename}`;
 
     const command = new PutObjectCommand({
-      Bucket: process.env.S3_BUCKET,
+      Bucket: process.env.CUSTOM_S3_BUCKET,
       Key: s3Path,
       Body: buffer,
       ContentType: contentType,
@@ -104,7 +104,7 @@ export async function POST(request) {
     return NextResponse.json({
       success: true,
       path: s3Path,
-      url: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Path}`
+      url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Path}`
     });
 
   } catch (error) {
@@ -128,7 +128,7 @@ export async function DELETE(request) {
         const key = url.split('.amazonaws.com/')[1];
 
         const command = new DeleteObjectCommand({
-            Bucket: process.env.S3_BUCKET,
+            Bucket: process.env.CUSTOM_S3_BUCKET,
             Key: key
         });
 

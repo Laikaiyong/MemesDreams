@@ -23,7 +23,7 @@ export async function GET(request) {
     }
 
     const command = new ListObjectsV2Command({
-      Bucket: process.env.S3_BUCKET,
+      Bucket: process.env.CUSTOM_S3_BUCKET,
       Prefix: `users/${walletId}/characters/${characterId}/`,
     });
 
@@ -37,13 +37,13 @@ export async function GET(request) {
 
     response.Contents?.forEach(item => {
       const path = item.Key;
-      const url = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`;
+      const url = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`;
 
       const pathParts = path.split('/');
       if (pathParts.length === 5) {  // users/walletId/characters/characterId
         character.mainImage = {
           path,
-          url: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
+          url: `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${path}`
         };
       } else if (path.includes('/twitter/')) {
         character.twitterPosts.push({

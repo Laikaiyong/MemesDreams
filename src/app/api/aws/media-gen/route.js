@@ -140,7 +140,7 @@ export async function POST(request) {
           modelInput: JSON.stringify(modelInput),
           outputDataConfig: {
             s3OutputDataConfig: {
-              s3Uri: `s3://${process.env.S3_OUTPUT_BUCKET}/users/${walletId}/characters/${characterId}/twitter/`,
+              s3Uri: `s3://${process.env.CUSTOM_S3_OUTPUT_BUCKET}/users/${walletId}/characters/${characterId}/twitter/`,
             },
           },
         })
@@ -169,7 +169,7 @@ export async function POST(request) {
       const fileName = `users/${walletId}/characters/${characterId}/generated-${Date.now()}.png`;
       await s3Client.send(
         new PutObjectCommand({
-          Bucket: process.env.S3_BUCKET,
+          Bucket: process.env.CUSTOM_S3_BUCKET,
           Key: fileName,
           Body: imageBuffer,
           ContentType: "image/png",
@@ -177,7 +177,7 @@ export async function POST(request) {
       );
 
       // Return S3 URL
-      const imageUrl = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      const imageUrl = `https://${process.env.CUSTOM_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
       return NextResponse.json({
         success: true,
