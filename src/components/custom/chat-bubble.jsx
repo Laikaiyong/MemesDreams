@@ -59,6 +59,8 @@ function Message({ content, role, mediaData }) {
 export default function ChatBubble({ characterId = null }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [previousPrompt, setPreviousPrompt] = useState("");
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -123,14 +125,24 @@ export default function ChatBubble({ characterId = null }) {
     scrollToBottom();
   }, [messages]);
 
-  async function handleMediaGeneration(type, useExisting = false, name="", symbol="") {
+  async function handleMediaGeneration(
+    type,
+    useExisting = false,
+    name = "",
+    symbol = ""
+  ) {
     try {
       setIsTyping(true);
       const characterId = `${name}-${symbol}`;
-
+      
+      // Combine previous prompt with current input
+      const combinedPrompt = previousPrompt 
+        ? `${previousPrompt} - ${inputMessage}`
+        : inputMessage;
+  
       let payload = {
         type,
-        prompt: inputMessage,
+        prompt: combinedPrompt,
         walletId,
         characterId,
       };
@@ -264,10 +276,11 @@ export default function ChatBubble({ characterId = null }) {
     // Handle different intents
     switch (intent) {
       case "CHARACTER_GENERATION":
+        setPreviousPrompt(input); // Store the initial prompt
         if (!characterName || !characterSymbol) {
           addMessage(
             "assistant",
-            "Please provide your character name and symbol (e.g. 'pepe PEPE')"
+            `For ${input} Please provide your character name and symbol (e.g. 'pepe PEPE')`
           );
           setWorkflowType("character-details");
         } else {
