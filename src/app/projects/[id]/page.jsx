@@ -28,7 +28,7 @@ function TweetPost({ post }) {
               <source src={post.url} type="video/mp4" />
             </video>
           ) : (
-            <Image
+            <img
               src={post.url}
               alt={caption}
               width={128}
@@ -119,7 +119,7 @@ export default function ProjectPage() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-6">
                 <div className="w-20 h-20 relative">
-                  <Image
+                  <img
                     src={character ? character.mainImage.url : ""}
                     alt={character ? character.id : ""}
                     fill

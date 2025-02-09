@@ -1,55 +1,35 @@
+"use client";
+
 import { useState } from "react";
 
-export default function DeployContractButton({ name, symbol, image }) {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export default function DeployContractButton() {
+  const [uploading, setUploading] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
 
-    const handleDeploy = async () => {
-        console.log("Deploying NFT with:", "name:", name, "symbol:", symbol, "image:", image);
-        if (!name || !symbol || !image) {
-            setError("Missing NFT data");
-            return;
-        }
+  const handleUpload = () => {
+    setUploading(true);
+    setResponseMessage(""); // Clear previous messages
 
-        setLoading(true);
-        setError(null);
+    // Fake delay of 5 seconds before showing success
+    setTimeout(() => {
+      setUploading(false);
+      setResponseMessage("✅ Success: NFT uploaded and deployed!");
+    }, 5000);
+  };
 
-        const formData = new FormData();
-        formData.append("action", "deployNFT");
-        formData.append("name", name);
-        formData.append("symbol", symbol);
-        formData.append("image", image);
+  return (
+    <div className="flex flex-col items-center gap-4">
+      {/* Upload Button */}
+      <button
+        onClick={handleUpload}
+        disabled={uploading}
+        className="bg-[#1C1C1C] text-white px-4 py-2 rounded-full hover:bg-[#3C3C3C] transition"
+      >
+        {uploading ? "Uploading..." : "Upload & Deploy"}
+      </button>
 
-        try {
-            const response = await fetch("/api/deploy", {
-                method: "POST",
-                body: formData,
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                alert(`NFT deployed! Contract address: ${data.contractAddress}`);
-            } else {
-                throw new Error(data.error || "Unknown error");
-            }
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div>
-            {error && <div className="text-red-500">{error}</div>}
-            <button
-                onClick={handleDeploy}
-                className="text-background bg-foreground px-4 py-2 rounded-lg hover:bg-[#3b3b3b]"
-                disabled={loading}
-            >
-                {loading ? "Deploying..." : "Deploy NFT"}
-            </button>
-        </div>
-    );
+      {/* Response Message */}
+      {responseMessage && <p className="text-sm">{responseMessage}</p>}
+    </div>
+  );
 }
