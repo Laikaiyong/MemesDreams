@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MemesDreams - AI NFT/Token Character Generation & Social Media Platform
 
-## Getting Started
+Create, manage, and share AI-generated characters with integrated social media features. MemesDreams leverages AWS Bedrock AI to generate unique characters and enables sharing through Twitter integration.
 
-First, run the development server:
+![MemesDreams Architecture](./docs/architecture.png)
+
+## Features
+
+- AI Character Generation using AWS Bedrock
+- Social Media Content Management
+- Secure Character Storage on AWS S3
+- Web3 Smart Contract Integration
+- Twitter API Integration
+- Interactive AI Chat Assistant
+- Character NFT Minting
+
+## Tech Stack
+
+- Next.js 14 with App Router
+- AWS Services (Bedrock, S3)
+- TailwindCSS
+- Web3.js/Ethers.js
+- Hyperbolic AI SDK
+
+## Deployment
+## Deployment
+
+1. Clone repository
+2. Install dependencies: `npm install` 
+3. Configure environment variables
+
+### AWS Setup
+
+1. Create IAM User:
+```bash
+aws iam create-user --user-name memesdreams-app
+aws iam attach-user-policy --user-name memesdreams-app --policy-arn arn:aws:iam::aws:policy/AWSBedrockFullAccess
+aws iam attach-user-policy --user-name memesdreams-app --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+aws iam attach-user-policy --user-name memesdreams-app --policy-arn arn:aws:iam::aws:policy/AWSLambdaFullAccess
+```
+
+2. Configure Knowledge Base:
+```bash
+# Create S3 bucket for knowledge base
+aws s3 mb s3://memesdreams-kb
+
+# Upload training data
+aws s3 cp ./data s3://memesdreams-kb/data --recursive
+```
+
+3. Setup Bedrock Model:
+```bash
+# Create model configuration
+aws bedrock create-model --model-id memesdreams-model \
+    --model-name "MemesDreams Character Generator" \
+    --data-source s3://memesdreams-kb/data
+```
+
+4. Deploy to Vercel: 
+```bash
+vercel deploy
+```
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 18+
+- AWS Account credentials
+- Twitter Developer API keys
+- Ethereum wallet
+
+### Environment Setup
+
+Copy `.env.example` to `.env`:
+```env
+# Environment variables must be configured
+# See .env.example for required fields
+```
+
+### Running Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Access the application at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Character Generation
+- `POST /api/generate`: Generate new AI character
+- `GET /api/characters`: List all characters
+- `GET /api/characters/{id}`: Get specific character
 
-## Learn More
+### Social Media
+- `POST /api/twitter/post`: Share character on Twitter
+- `GET /api/twitter/metrics`: Get engagement metrics
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Web3
+- `POST /api/mint`: Mint character as NFT
+- `GET /api/tokens`: Get user's NFT collection
